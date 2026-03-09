@@ -1,0 +1,61 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: order-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: order_system
+      TZ: Asia/Shanghai
+      LANG: C.UTF-8
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4'
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - order-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: order-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/order_system?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - order-network
+
+  frontend-admin:
+    build:
+      context: ./frontend-admin
+      dockerfile: Dockerfile
+    container_name: order-frontend-admin
+    ports:
+      - "8082:80"
+    depends_on:
+      - backend
+    networks:
+      - order-network
+
+volumes:
+  mysql_data:
+  uploads_data:
+
+networks:
+  order-network:
+    driver: bridge

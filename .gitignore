@@ -1,0 +1,59 @@
+# Backend - Java/Maven
+backend/target/
+backend/*.jar
+backend/*.war
+backend/*.class
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+
+# Backend - IDE
+backend/.idea/
+backend/*.iml
+backend/.settings/
+backend/.project
+backend/.classpath
+
+# Backend - Logs
+backend/logs/
+backend/*.log
+
+# Backend - Uploads
+backend/uploads/
+
+# Frontend - Node
+frontend-admin/node_modules/
+frontend-admin/dist/
+frontend-admin/.npm/
+frontend-admin/npm-debug.log*
+frontend-admin/yarn-debug.log*
+frontend-admin/yarn-error.log*
+
+# Frontend - IDE
+frontend-admin/.vscode/
+frontend-admin/.idea/
+
+# Frontend - Build
+frontend-admin/*.local
+
+# Docker
+.docker/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Label file
+label-01739.md
