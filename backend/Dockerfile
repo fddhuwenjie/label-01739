@@ -8,6 +8,7 @@ RUN mvn clean package -DskipTests -B
 
 # 运行阶段
 FROM eclipse-temurin:21-jre-alpine
+RUN apk add --no-cache curl
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 RUN mkdir -p /app/uploads
